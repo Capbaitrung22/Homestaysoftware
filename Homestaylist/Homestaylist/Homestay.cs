@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,6 +45,7 @@ namespace Homestaylist
             txtSpace.Text = bkedit.Space;
             cbxHomestayown.SelectedValue = bkedit.Homestayown_ID;
             //this.pictureBox.Image = byteArrayToImage(bkedit.Image);
+            if (bkedit.Image != null) { this.pictureBox.Image = byteArrayToImage(bkedit.Image); }
 
         }
 
@@ -107,17 +109,22 @@ namespace Homestaylist
                     MessageBox.Show(ex.Message);
                 }
             }
-
         }
 
-        private void btnImage(object sender, EventArgs e)
+        private void btnImage_Click(object sender, EventArgs e)
         {
             OpenFileDialog open = new OpenFileDialog();
+            open.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
             if (open.ShowDialog() == DialogResult.OK)
                 txtImage.Text = open.FileName;
             pictureBox.ImageLocation = open.FileName;
         }
 
+        public Image byteArrayToImage(byte[] byteArrayIn)
+        {
+            MemoryStream ms = new MemoryStream(byteArrayIn);
+            Image returnImage = Image.FromStream(ms);
+            return returnImage;
+        }
     }
 }
-    
